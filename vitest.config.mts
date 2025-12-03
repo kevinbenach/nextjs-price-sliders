@@ -6,7 +6,7 @@
     plugins: [react()],
     test: {
       environment: 'jsdom',
-      setupFiles: ['./vitest.setup.ts'],
+      setupFiles: ['./vitest.setup.mts'],
       globals: true,
     },
     resolve: {
