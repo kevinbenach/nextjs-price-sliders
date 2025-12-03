@@ -1,0 +1,241 @@
+/* Range Component Styles - Mobile First */
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  width: 100%;
+  padding: var(--spacing-md) 0;
+  user-select: none;
+  /* Ensure component doesn't break on tiny screens */
+  min-width: 0;
+}
+
+/* Labels - Mobile First */
+.labelWrapper {
+  flex-shrink: 0;
+  /* Mobile: smaller labels */
+  min-width: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-foreground);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  white-space: nowrap;
+  /* Ensure labels don't overflow on mobile */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.labelEditable {
+  cursor: pointer;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
+  /* Better touch target on mobile */
+  min-width: 48px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Touch-friendly hover states */
+@media (hover: hover) {
+  .labelEditable:hover {
+    background-color: var(--color-border);
+    transform: scale(1.02);
+  }
+}
+
+.labelEditable:active {
+  background-color: var(--color-border);
+  transform: scale(0.98);
+}
+
+.labelEditable:focus {
+  outline: 2px solid var(--color-foreground);
+  outline-offset: 2px;
+}
+
+.labelInput {
+  width: 72px;
+  padding: var(--spacing-sm);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: inherit;
+  border: 2px solid var(--color-foreground);
+  border-radius: var(--radius-sm);
+  outline: none;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  background: var(--color-background);
+  /* Better touch target */
+  min-height: 40px;
+  transition: box-shadow var(--transition-fast);
+}
+
+.labelInput:focus {
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Remove number input spinners */
+.labelInput::-webkit-outer-spin-button,
+.labelInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.labelInput[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Track - Mobile First */
+.track {
+  position: relative;
+  flex: 1;
+  height: var(--range-track-height);
+  background-color: var(--range-track-bg);
+  border-radius: calc(var(--range-track-height) / 2);
+  cursor: pointer;
+  /* Ensure minimum clickable area on mobile */
+  padding: var(--spacing-sm) 0;
+  margin: calc(var(--spacing-sm) * -1) 0;
+}
+
+.trackActive {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: var(--range-track-height);
+  background-color: var(--range-track-active);
+  border-radius: calc(var(--range-track-height) / 2);
+  pointer-events: none;
+  transition:
+    left var(--transition-fast),
+    width var(--transition-fast);
+}
+
+/* Handle - Mobile First (Larger for touch) */
+.handle {
+  position: absolute;
+  top: 50%;
+  width: var(--range-handle-size);
+  height: var(--range-handle-size);
+  background-color: var(--range-handle-bg);
+  border: 3px solid var(--range-handle-border);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  transition:
+    width var(--transition-fast),
+    height var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+  box-shadow: var(--shadow-md);
+  z-index: 1;
+  touch-action: none;
+  /* Ensure handles are easy to tap */
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Only apply hover on devices that support it */
+@media (hover: hover) and (pointer: fine) {
+  .handle:hover {
+    width: var(--range-handle-size-hover);
+    height: var(--range-handle-size-hover);
+    box-shadow: var(--shadow-lg);
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+.handle:focus {
+  outline: none;
+  box-shadow:
+    0 0 0 4px rgba(0, 0, 0, 0.12),
+    var(--shadow-lg);
+}
+
+.handle:active,
+.handleDragging {
+  cursor: grabbing;
+  width: var(--range-handle-size-hover);
+  height: var(--range-handle-size-hover);
+  box-shadow: var(--shadow-lg);
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+/* Ensure the second handle appears on top when they overlap */
+.handle:last-of-type {
+  z-index: 2;
+}
+
+/* Tablet and up (768px+) */
+@media (min-width: 768px) {
+  .container {
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg) 0;
+  }
+
+  .labelWrapper {
+    min-width: 72px;
+  }
+
+  .label {
+    font-size: 0.875rem;
+  }
+
+  .labelEditable {
+    min-width: 56px;
+    min-height: 36px;
+  }
+
+  .labelInput {
+    width: 80px;
+    font-size: 0.875rem;
+    min-height: 44px;
+  }
+
+  .track {
+    padding: var(--spacing-md) 0;
+    margin: calc(var(--spacing-md) * -1) 0;
+  }
+
+  /* Smaller handles for better precision on desktop */
+  .handle {
+    min-width: auto;
+    min-height: auto;
+  }
+}
+
+/* Desktop and up (1024px+) */
+@media (min-width: 1024px) {
+  .container {
+    gap: var(--spacing-lg);
+  }
+
+  .labelWrapper {
+    min-width: 80px;
+  }
+
+  .label {
+    font-size: 0.9375rem;
+  }
+
+  .labelInput {
+    width: 90px;
+    font-size: 0.9375rem;
+  }
+}
