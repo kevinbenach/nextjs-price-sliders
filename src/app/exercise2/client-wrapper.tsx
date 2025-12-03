@@ -5,22 +5,20 @@ import { Range, RangeValues } from '@/components/Range';
 import styles from './client-wrapper.module.css';
 
 type Props = {
-  min: number;
-  max: number;
+  values: number[];
 };
 
-export default function ClientWrapper({ min, max }: Props) {
+export default function ClientWrapper({ values }: Props) {
   const [selectedRange, setSelectedRange] = useState<RangeValues>({
-    min,
-    max,
+    min: values[0],
+    max: values[values.length - 1],
   });
 
   return (
     <div className={styles.wrapper}>
       <Range
-        mode="normal"
-        min={min}
-        max={max}
+        mode="fixed"
+        values={values}
         onChange={setSelectedRange}
       />
 
