@@ -19,13 +19,13 @@
 @media (min-width: 768px) {
   .container {
     padding: var(--spacing-2xl); /* Spacious on desktop */
-    min-height: 500px; /* Fixed height on desktop prevents CLS */
+    height: 580px; /* Exact fixed height - prevents any variation */
   }
 }
 
 .header {
   text-align: center;
-  margin-bottom: var(--spacing-3xl);
+  margin-bottom: var(--spacing-2xl);
 }
 
 .title {

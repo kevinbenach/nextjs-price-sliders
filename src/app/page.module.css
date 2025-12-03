@@ -25,7 +25,7 @@
 @media (min-width: 768px) {
   .content {
     padding: var(--spacing-3xl); /* Spacious on desktop */
-    min-height: 400px; /* Fixed height on desktop for consistency */
+    height: 580px; /* Exact fixed height - prevents any variation */
   }
 }
 
