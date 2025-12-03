@@ -12,10 +12,15 @@
   max-width: var(--container-md);
   background: var(--color-background);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-2xl);
+  padding: 24px; /* Compact on mobile */
   box-shadow: var(--shadow-lg);
-  /* Fixed minimum height - prevents CLS and ensures consistency across pages */
-  min-height: 500px;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: var(--spacing-2xl); /* Spacious on desktop */
+    min-height: 500px; /* Fixed height on desktop prevents CLS */
+  }
 }
 
 .header {
@@ -24,15 +29,27 @@
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 1.75rem; /* Smaller on mobile */
   font-weight: 700;
   margin-bottom: var(--spacing-md);
   letter-spacing: -0.02em;
 }
 
+@media (min-width: 768px) {
+  .title {
+    font-size: 2rem; /* Full size on desktop */
+  }
+}
+
 .description {
   color: var(--color-muted);
-  font-size: 1rem;
+  font-size: 0.9375rem; /* Slightly smaller on mobile */
+}
+
+@media (min-width: 768px) {
+  .description {
+    font-size: 1rem; /* Standard size on desktop */
+  }
 }
 
 .rangeContainer {

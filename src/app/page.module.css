@@ -14,30 +14,47 @@
   max-width: var(--container-md);
   width: 100%;
   background: var(--color-background);
-  padding: var(--spacing-3xl);
+  padding: 32px; /* Compact on mobile */
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
-  /* Fixed height - matches exercise containers for consistency */
-  min-height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
+@media (min-width: 768px) {
+  .content {
+    padding: var(--spacing-3xl); /* Spacious on desktop */
+    min-height: 400px; /* Fixed height on desktop for consistency */
+  }
+}
+
 .title {
-  font-size: 2.5rem;
+  font-size: 2rem; /* Smaller on mobile */
   font-weight: 700;
   letter-spacing: -0.02em;
   margin-bottom: var(--spacing-lg);
   color: var(--color-foreground);
 }
 
+@media (min-width: 768px) {
+  .title {
+    font-size: 2.5rem; /* Larger on desktop */
+  }
+}
+
 .description {
   color: var(--color-muted);
   text-align: center;
-  font-size: 1.125rem;
+  font-size: 1rem; /* Standard on mobile */
   margin-bottom: var(--spacing-2xl);
   line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .description {
+    font-size: 1.125rem; /* Slightly larger on desktop */
+  }
 }
 
 .nav {

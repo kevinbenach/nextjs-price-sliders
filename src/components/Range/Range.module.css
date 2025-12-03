@@ -10,13 +10,19 @@
   min-width: 0;
 }
 
-/* Labels - Fixed size */
+/* Labels - Responsive for mobile slider space */
 .labelWrapper {
   flex-shrink: 0;
-  min-width: 80px;
+  min-width: 50px; /* Compact on mobile for more slider room */
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .labelWrapper {
+    min-width: 80px; /* Spacious on desktop */
+  }
 }
 
 .label {
