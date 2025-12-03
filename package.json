@@ -9,7 +9,7 @@
     "start": "next start -p 8080",
     "lint": "eslint src/",
     "type-check": "tsc --noEmit",
-    "test": "vitest",
+    "test": "vitest run",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "ci": "npm run lint && npm run type-check && npm run test -- --run && npm run build"
