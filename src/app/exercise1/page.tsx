@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import { RangeWrapper } from '@/components/RangeWrapper';
+import { RangeSkeleton } from '@/components/RangeSkeleton';
 import { Navigation } from '@/components/Navigation';
 import styles from './page.module.css';
 
@@ -42,7 +43,13 @@ export default function Exercise1Page() {
           </p>
         </header>
 
-        <Suspense fallback={<div className={styles.loading}>Loading range data...</div>}>
+        <Suspense
+          fallback={
+            <div className={styles.rangeContainer}>
+              <RangeSkeleton />
+            </div>
+          }
+        >
           <RangeContainer />
         </Suspense>
       </div>

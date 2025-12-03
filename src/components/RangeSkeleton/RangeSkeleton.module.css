@@ -1,0 +1,163 @@
+/* Match exact dimensions of RangeWrapper */
+.wrapper {
+  width: 100%;
+}
+
+/* Match Range component layout */
+.rangeContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  width: 100%;
+  padding: var(--spacing-md) 0;
+}
+
+.labelSkeleton {
+  flex-shrink: 0;
+  min-width: 56px;
+  height: 20px;
+  background: linear-gradient(
+    90deg,
+    #e5e7eb 0%,
+    #f3f4f6 50%,
+    #e5e7eb 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+.track {
+  position: relative;
+  flex: 1;
+  height: var(--range-track-height);
+  background-color: var(--range-track-bg);
+  border-radius: calc(var(--range-track-height) / 2);
+  padding: var(--spacing-sm) 0;
+  margin: calc(var(--spacing-sm) * -1) 0;
+}
+
+.trackActive {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  height: var(--range-track-height);
+  background: linear-gradient(
+    90deg,
+    #e5e7eb 0%,
+    #f3f4f6 50%,
+    #e5e7eb 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: calc(var(--range-track-height) / 2);
+}
+
+.handle {
+  position: absolute;
+  top: 50%;
+  width: var(--range-handle-size);
+  height: var(--range-handle-size);
+  background-color: #e5e7eb;
+  border: 3px solid var(--color-background);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: var(--shadow-md);
+  z-index: 1;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Match selectedValues display */
+.selectedValues {
+  margin-top: var(--spacing-3xl);
+  text-align: center;
+  padding: var(--spacing-lg);
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.labelTextSkeleton {
+  height: 14px;
+  width: 120px;
+  margin: 0 auto var(--spacing-sm);
+  background: linear-gradient(
+    90deg,
+    #e5e7eb 0%,
+    #f3f4f6 50%,
+    #e5e7eb 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+.valuesTextSkeleton {
+  height: 24px;
+  width: 180px;
+  margin: 0 auto;
+  background: linear-gradient(
+    90deg,
+    #e5e7eb 0%,
+    #f3f4f6 50%,
+    #e5e7eb 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .rangeContainer {
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg) 0;
+  }
+
+  .labelSkeleton {
+    min-width: 72px;
+    height: 22px;
+  }
+
+  .track {
+    padding: var(--spacing-md) 0;
+    margin: calc(var(--spacing-md) * -1) 0;
+  }
+
+  .handle {
+    min-width: auto;
+    min-height: auto;
+  }
+
+  .valuesTextSkeleton {
+    height: 32px;
+    width: 200px;
+  }
+
+  .labelTextSkeleton {
+    height: 16px;
+  }
+}
+
+/* Desktop and up */
+@media (min-width: 1024px) {
+  .rangeContainer {
+    gap: var(--spacing-lg);
+  }
+
+  .labelSkeleton {
+    min-width: 80px;
+  }
+}
