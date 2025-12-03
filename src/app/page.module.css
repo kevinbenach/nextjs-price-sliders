@@ -5,7 +5,8 @@
   align-items: center;
   justify-content: center;
   padding: var(--spacing-lg);
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* Same gradient as exercises - clean black/white style */
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 .content {
@@ -16,10 +17,15 @@
   padding: var(--spacing-3xl);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
+  /* Fixed height - matches exercise containers for consistency */
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   margin-bottom: var(--spacing-lg);
@@ -29,14 +35,14 @@
 .description {
   color: var(--color-muted);
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.125rem;
   margin-bottom: var(--spacing-2xl);
   line-height: 1.6;
 }
 
 .nav {
   display: flex;
-  gap: var(--spacing-md);
+  gap: var(--spacing-lg);
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -48,7 +54,7 @@
   text-decoration: none;
   border-radius: var(--radius-md);
   font-weight: 500;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   transition: opacity 150ms ease, transform 150ms ease;
   display: inline-block;
 }
@@ -62,26 +68,4 @@
   transform: translateY(0);
 }
 
-@media (min-width: 768px) {
-  .title {
-    font-size: 2.5rem;
-  }
-
-  .description {
-    font-size: 1.125rem;
-  }
-
-  .link {
-    font-size: 1rem;
-  }
-
-  .nav {
-    gap: var(--spacing-lg);
-  }
-}
-
-@media (min-width: 1024px) {
-  .title {
-    font-size: 3rem;
-  }
-}
+/* NO RESPONSIVE FONT CHANGES - Fixed sizes prevent CLS */

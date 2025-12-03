@@ -57,7 +57,7 @@ export default function Exercise2Page() {
         <Suspense
           fallback={
             <div className={styles.rangeContainer}>
-              <RangeSkeleton />
+              <RangeSkeleton showValues />
             </div>
           }
         >

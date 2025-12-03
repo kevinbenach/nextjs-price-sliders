@@ -7,7 +7,6 @@ import type {
   NormalRangeProps,
   FixedRangeProps,
   DraggingHandle,
-  RangeValues,
 } from "./Range.types";
 import styles from "./Range.module.css";
 

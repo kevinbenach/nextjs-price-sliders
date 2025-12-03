@@ -14,6 +14,8 @@
   border-radius: var(--radius-lg);
   padding: var(--spacing-2xl);
   box-shadow: var(--shadow-lg);
+  /* Fixed minimum height - prevents CLS and ensures consistency across pages */
+  min-height: 500px;
 }
 
 .header {
@@ -22,7 +24,7 @@
 }
 
 .title {
-  font-size: 1.875rem;
+  font-size: 2rem;
   font-weight: 700;
   margin-bottom: var(--spacing-md);
   letter-spacing: -0.02em;
@@ -30,7 +32,7 @@
 
 .description {
   color: var(--color-muted);
-  font-size: 0.9375rem;
+  font-size: 1rem;
 }
 
 .rangeContainer {
@@ -41,19 +43,7 @@
   text-align: center;
   padding: var(--spacing-2xl);
   color: var(--color-muted);
-  font-size: 0.9375rem;
+  font-size: 1rem;
 }
 
-@media (min-width: 768px) {
-  .title {
-    font-size: 2.25rem;
-  }
-
-  .description {
-    font-size: 1rem;
-  }
-
-  .container {
-    padding: var(--spacing-3xl);
-  }
-}
+/* NO RESPONSIVE FONT CHANGES - Fixed sizes prevent CLS */
