@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect, useMemo } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useDrag } from "@/hooks/useDrag";
 import type {
   RangeProps,
@@ -219,20 +219,24 @@ export function Range(props: RangeProps) {
   /**
    * Formats value with currency for display
    */
-  const formatValue = useCallback(
-    (value: number) => {
-      return `${value.toFixed(2)}${currency}`;
-    },
-    [currency]
-  );
+  const formatValue = (value: number) => `${value.toFixed(2)}${currency}`;
 
-  // Memoize whether we're in normal mode to avoid recalculating
-  const isInNormalMode = useMemo(() => isNormalMode(props), [props.mode]);
+  // Check if we're in normal mode (for label editing)
+  const isInNormalMode = isNormalMode(props);
 
-  // Render labels based on mode - memoized to prevent unnecessary re-renders
-  const renderMinLabel = useMemo(() => {
-    if (isInNormalMode && editingLabel === "min") {
+  /**
+   * Render label (min or max) - Simple, no over-memoization
+   */
+  const renderLabel = (which: "min" | "max") => {
+    const value = which === "min" ? state.minValue : state.maxValue;
+    const isEditing = editingLabel === which;
+
+    // Show input when editing (normal mode only)
+    if (isInNormalMode && isEditing) {
       const currentProps = propsRef.current as NormalRangeProps;
+      const min = which === "min" ? currentProps.min : state.minValue;
+      const max = which === "min" ? state.maxValue : currentProps.max;
+
       return (
         <input
           type="number"
@@ -242,90 +246,49 @@ export function Range(props: RangeProps) {
           onBlur={handleLabelBlur}
           onKeyDown={handleLabelKeyDown}
           autoFocus
-          min={currentProps.min}
-          max={state.maxValue}
+          min={min}
+          max={max}
           step={currentProps.step ?? 1}
-          aria-label="Minimum value input"
+          aria-label={`${which === "min" ? "Minimum" : "Maximum"} value input`}
         />
       );
     }
 
+    // Show label (clickable in normal mode)
     return (
       <span
-        className={`${styles.label} ${
-          isInNormalMode ? styles.labelEditable : ""
-        }`}
-        onClick={() => handleLabelClick("min")}
+        className={`${styles.label} ${isInNormalMode ? styles.labelEditable : ""}`}
+        onClick={() => isInNormalMode && handleLabelClick(which)}
         role={isInNormalMode ? "button" : undefined}
         tabIndex={isInNormalMode ? 0 : undefined}
-        onKeyDown={(e) => e.key === "Enter" && handleLabelClick("min")}
-        aria-label={`Minimum value: ${formatValue(state.minValue)}`}
+        onKeyDown={(e) => isInNormalMode && e.key === "Enter" && handleLabelClick(which)}
+        aria-label={`${which === "min" ? "Minimum" : "Maximum"} value: ${formatValue(value)}`}
       >
-        {formatValue(state.minValue)}
+        {formatValue(value)}
       </span>
     );
-  }, [
-    isInNormalMode,
-    editingLabel,
-    editValue,
-    state.minValue,
-    state.maxValue,
-    handleLabelBlur,
-    handleLabelKeyDown,
-    handleLabelClick,
-    formatValue,
-  ]);
+  };
 
-  const renderMaxLabel = useMemo(() => {
-    if (isInNormalMode && editingLabel === "max") {
-      const currentProps = propsRef.current as NormalRangeProps;
-      return (
-        <input
-          type="number"
-          className={styles.labelInput}
-          value={editValue}
-          onChange={(e) => setEditValue(e.target.value)}
-          onBlur={handleLabelBlur}
-          onKeyDown={handleLabelKeyDown}
-          autoFocus
-          min={state.minValue}
-          max={currentProps.max}
-          step={currentProps.step ?? 1}
-          aria-label="Maximum value input"
-        />
-      );
+  // Helper to get ARIA values based on mode
+  const getAriaValues = () => {
+    if (isInNormalMode) {
+      const normalProps = props as NormalRangeProps;
+      return { min: normalProps.min, max: normalProps.max };
+    } else {
+      const fixedProps = props as FixedRangeProps;
+      return {
+        min: fixedProps.values[0],
+        max: fixedProps.values[fixedProps.values.length - 1],
+      };
     }
+  };
 
-    return (
-      <span
-        className={`${styles.label} ${
-          isInNormalMode ? styles.labelEditable : ""
-        }`}
-        onClick={() => handleLabelClick("max")}
-        role={isInNormalMode ? "button" : undefined}
-        tabIndex={isInNormalMode ? 0 : undefined}
-        onKeyDown={(e) => e.key === "Enter" && handleLabelClick("max")}
-        aria-label={`Maximum value: ${formatValue(state.maxValue)}`}
-      >
-        {formatValue(state.maxValue)}
-      </span>
-    );
-  }, [
-    isInNormalMode,
-    editingLabel,
-    editValue,
-    state.minValue,
-    state.maxValue,
-    handleLabelBlur,
-    handleLabelKeyDown,
-    handleLabelClick,
-    formatValue,
-  ]);
+  const ariaValues = getAriaValues();
 
   return (
     <div className={styles.container} data-testid="range-container">
       {/* Min Label */}
-      <div className={styles.labelWrapper}>{renderMinLabel}</div>
+      <div className={styles.labelWrapper}>{renderLabel("min")}</div>
 
       {/* Track */}
       <div ref={trackRef} className={styles.track} data-testid="range-track">
@@ -341,18 +304,12 @@ export function Range(props: RangeProps) {
 
         {/* Min Handle */}
         <div
-          className={`${styles.handle} ${
-            isDragging === "min" ? styles.handleDragging : ""
-          }`}
+          className={`${styles.handle} ${isDragging === "min" ? styles.handleDragging : ""}`}
           style={{ left: `${state.minPercent * 100}%` }}
           {...minHandleProps}
           role="slider"
           aria-label="Minimum value handle"
-          aria-valuemin={
-            isInNormalMode
-              ? (props as NormalRangeProps).min
-              : (props as FixedRangeProps).values[0]
-          }
+          aria-valuemin={ariaValues.min}
           aria-valuemax={state.maxValue}
           aria-valuenow={state.minValue}
           tabIndex={0}
@@ -361,21 +318,13 @@ export function Range(props: RangeProps) {
 
         {/* Max Handle */}
         <div
-          className={`${styles.handle} ${
-            isDragging === "max" ? styles.handleDragging : ""
-          }`}
+          className={`${styles.handle} ${isDragging === "max" ? styles.handleDragging : ""}`}
           style={{ left: `${state.maxPercent * 100}%` }}
           {...maxHandleProps}
           role="slider"
           aria-label="Maximum value handle"
           aria-valuemin={state.minValue}
-          aria-valuemax={
-            isInNormalMode
-              ? (props as NormalRangeProps).max
-              : (props as FixedRangeProps).values[
-                  (props as FixedRangeProps).values.length - 1
-                ]
-          }
+          aria-valuemax={ariaValues.max}
           aria-valuenow={state.maxValue}
           tabIndex={0}
           data-testid="range-handle-max"
@@ -383,7 +332,7 @@ export function Range(props: RangeProps) {
       </div>
 
       {/* Max Label */}
-      <div className={styles.labelWrapper}>{renderMaxLabel}</div>
+      <div className={styles.labelWrapper}>{renderLabel("max")}</div>
     </div>
   );
 }

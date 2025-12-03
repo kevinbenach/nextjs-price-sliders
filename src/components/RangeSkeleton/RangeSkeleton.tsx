@@ -3,7 +3,7 @@ import styles from './RangeSkeleton.module.css';
 export function RangeSkeleton() {
   return (
     <div className={styles.wrapper}>
-      {/* Skeleton for Range component */}
+      {/* Skeleton for Range component - matches exact layout */}
       <div className={styles.rangeContainer}>
         {/* Min Label */}
         <div className={styles.labelSkeleton} />
@@ -17,12 +17,6 @@ export function RangeSkeleton() {
 
         {/* Max Label */}
         <div className={styles.labelSkeleton} />
-      </div>
-
-      {/* Skeleton for selected values display */}
-      <div className={styles.selectedValues}>
-        <div className={styles.labelTextSkeleton} />
-        <div className={styles.valuesTextSkeleton} />
       </div>
     </div>
   );

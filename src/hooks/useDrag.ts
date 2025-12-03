@@ -93,6 +93,8 @@ export function useDrag({ trackRef, onDrag, onDragEnd }: UseDragOptions): UseDra
     const handleTouchMove = (e: TouchEvent) => {
       if (!isDraggingRef.current || e.touches.length === 0) return;
 
+      // Prevent page scroll while dragging (fix bug)
+      e.preventDefault();
       const percent = getPercentFromClientX(e.touches[0].clientX);
       onDragRef.current(isDraggingRef.current, percent);
     };

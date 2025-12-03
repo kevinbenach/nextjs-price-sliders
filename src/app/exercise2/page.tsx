@@ -1,13 +1,14 @@
 import { Suspense } from 'react';
-import { RangeWrapper } from '@/components/RangeWrapper';
+import { Range } from '@/components/Range';
 import { RangeSkeleton } from '@/components/RangeSkeleton';
 import { Navigation } from '@/components/Navigation';
 import styles from './page.module.css';
 
 async function getFixedRangeData() {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:8080';
+  // Fix Vercel URL construction (was broken due to operator precedence)
+  const baseUrl =
+    process.env.NEXT_PUBLIC_API_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:8080');
 
   const res = await fetch(`${baseUrl}/api/fixed-range`, {
     cache: 'no-store',
@@ -35,7 +36,7 @@ async function RangeContainer() {
           ))}
         </p>
       </div>
-      <RangeWrapper mode="fixed" values={data.rangeValues} />
+      <Range mode="fixed" values={data.rangeValues} />
     </div>
   );
 }
