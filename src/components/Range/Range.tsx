@@ -10,46 +10,25 @@ import type {
 } from "./Range.types";
 import styles from "./Range.module.css";
 
-/**
- * Type guard to check if props are for normal mode
- */
 function isNormalMode(props: RangeProps): props is NormalRangeProps {
   return props.mode === "normal";
 }
 
-/**
- * Range Component
- *
- * A custom dual-handle range slider with two modes:
- * - Normal: Continuous values between min and max
- * - Fixed: Discrete values from a predefined array
- *
- * Features:
- * - Draggable handles with hover/drag states
- * - Editable labels (normal mode only)
- * - Handles cannot cross each other
- * - Touch support
- * - Accessible (keyboard support, ARIA labels)
- */
 export function Range(props: RangeProps) {
   const { onChange, currency = "€" } = props;
 
   const trackRef = useRef<HTMLDivElement>(null);
-  // Store onChange in a ref to avoid re-renders when it changes
   const onChangeRef = useRef(onChange);
+  const propsRef = useRef(props);
 
-  // Update ref when onChange changes without triggering re-renders
   useEffect(() => {
     onChangeRef.current = onChange;
   }, [onChange]);
 
-  // Store props in a ref to avoid stale closures in callbacks
-  const propsRef = useRef(props);
   useEffect(() => {
     propsRef.current = props;
   }, [props]);
 
-  // Initialize state based on mode
   const [state, setState] = useState(() => {
     if (isNormalMode(props)) {
       const minValue = props.initialMinValue ?? props.min;
@@ -57,7 +36,6 @@ export function Range(props: RangeProps) {
       return {
         minValue,
         maxValue,
-        // Calculate percentages
         minPercent: (minValue - props.min) / (props.max - props.min),
         maxPercent: (maxValue - props.min) / (props.max - props.min),
       };
@@ -74,13 +52,9 @@ export function Range(props: RangeProps) {
     }
   });
 
-  // Editing state for labels (normal mode only)
   const [editingLabel, setEditingLabel] = useState<"min" | "max" | null>(null);
   const [editValue, setEditValue] = useState("");
 
-  /**
-   * Handles drag updates from the useDrag hook
-   */
   const handleDrag = useCallback((handle: DraggingHandle, percent: number) => {
     if (!handle) return;
 
@@ -97,28 +71,22 @@ export function Range(props: RangeProps) {
         const range = max - min;
 
         if (handle === "min") {
-          // Clamp so min doesn't exceed max
           newMinPercent = Math.min(percent, prev.maxPercent);
           const rawValue = min + newMinPercent * range;
-          // Snap to step
           newMinValue = Math.round(rawValue / step) * step;
-          // Recalculate percent based on snapped value
           newMinPercent = (newMinValue - min) / range;
         } else {
-          // Clamp so max doesn't go below min
           newMaxPercent = Math.max(percent, prev.minPercent);
           const rawValue = min + newMaxPercent * range;
           newMaxValue = Math.round(rawValue / step) * step;
           newMaxPercent = (newMaxValue - min) / range;
         }
       } else {
-        // Fixed mode - snap to nearest index
         const { values } = currentProps;
         const numSteps = values.length - 1;
 
         if (handle === "min") {
           const rawIndex = Math.round(percent * numSteps);
-          // Clamp so min doesn't exceed max
           const maxIndex = Math.round(prev.maxPercent * numSteps);
           const clampedIndex = Math.min(rawIndex, maxIndex);
           newMinPercent = clampedIndex / numSteps;
@@ -141,7 +109,6 @@ export function Range(props: RangeProps) {
     });
   }, []);
 
-  // Notify parent of changes using ref to avoid re-render issues
   useEffect(() => {
     onChangeRef.current?.({ min: state.minValue, max: state.maxValue });
   }, [state.minValue, state.maxValue]);
@@ -151,9 +118,6 @@ export function Range(props: RangeProps) {
     onDrag: handleDrag,
   });
 
-  /**
-   * Handles label editing (normal mode only)
-   */
   const handleLabelClick = useCallback(
     (which: "min" | "max") => {
       const currentProps = propsRef.current;
@@ -180,7 +144,6 @@ export function Range(props: RangeProps) {
 
       setState((prev) => {
         if (editingLabel === "min") {
-          // Clamp between min and current max value
           const clampedValue = Math.max(min, Math.min(numValue, prev.maxValue));
           return {
             ...prev,
@@ -188,7 +151,6 @@ export function Range(props: RangeProps) {
             minPercent: (clampedValue - min) / (max - min),
           };
         } else {
-          // Clamp between current min value and max
           const clampedValue = Math.max(prev.minValue, Math.min(numValue, max));
           return {
             ...prev,
@@ -215,22 +177,14 @@ export function Range(props: RangeProps) {
     [handleLabelBlur]
   );
 
-  /**
-   * Formats value with currency for display
-   */
   const formatValue = (value: number) => `${value.toFixed(2)}${currency}`;
 
-  // Check if we're in normal mode (for label editing)
   const isInNormalMode = isNormalMode(props);
 
-  /**
-   * Render label (min or max) - Simple, no over-memoization
-   */
   const renderLabel = (which: "min" | "max") => {
     const value = which === "min" ? state.minValue : state.maxValue;
     const isEditing = editingLabel === which;
 
-    // Show input when editing (normal mode only)
     if (isInNormalMode && isEditing) {
       const currentProps = propsRef.current as NormalRangeProps;
       const min = which === "min" ? currentProps.min : state.minValue;
@@ -253,7 +207,6 @@ export function Range(props: RangeProps) {
       );
     }
 
-    // Show label (clickable in normal mode)
     return (
       <span
         className={`${styles.label} ${isInNormalMode ? styles.labelEditable : ""}`}
@@ -268,30 +221,18 @@ export function Range(props: RangeProps) {
     );
   };
 
-  // Helper to get ARIA values based on mode
-  const getAriaValues = () => {
-    if (isInNormalMode) {
-      const normalProps = props as NormalRangeProps;
-      return { min: normalProps.min, max: normalProps.max };
-    } else {
-      const fixedProps = props as FixedRangeProps;
-      return {
-        min: fixedProps.values[0],
-        max: fixedProps.values[fixedProps.values.length - 1],
+  const ariaValues = isInNormalMode
+    ? { min: (props as NormalRangeProps).min, max: (props as NormalRangeProps).max }
+    : {
+        min: (props as FixedRangeProps).values[0],
+        max: (props as FixedRangeProps).values[(props as FixedRangeProps).values.length - 1]
       };
-    }
-  };
-
-  const ariaValues = getAriaValues();
 
   return (
     <div className={styles.container} data-testid="range-container">
-      {/* Min Label */}
       <div className={styles.labelWrapper}>{renderLabel("min")}</div>
 
-      {/* Track */}
       <div ref={trackRef} className={styles.track} data-testid="range-track">
-        {/* Active range highlight */}
         <div
           className={styles.trackActive}
           style={{
@@ -301,7 +242,6 @@ export function Range(props: RangeProps) {
           data-testid="range-track-active"
         />
 
-        {/* Min Handle */}
         <div
           className={`${styles.handle} ${isDragging === "min" ? styles.handleDragging : ""}`}
           style={{ left: `${state.minPercent * 100}%` }}
@@ -315,7 +255,6 @@ export function Range(props: RangeProps) {
           data-testid="range-handle-min"
         />
 
-        {/* Max Handle */}
         <div
           className={`${styles.handle} ${isDragging === "max" ? styles.handleDragging : ""}`}
           style={{ left: `${state.maxPercent * 100}%` }}
@@ -330,7 +269,6 @@ export function Range(props: RangeProps) {
         />
       </div>
 
-      {/* Max Label */}
       <div className={styles.labelWrapper}>{renderLabel("max")}</div>
     </div>
   );
