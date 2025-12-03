@@ -182,19 +182,32 @@ describe('useDrag', () => {
     const mockTrackRef = createMockTrackRef();
     const mockOnDrag = vi.fn();
 
-    renderHook(() =>
+    const { result } = renderHook(() =>
       useDrag({
         trackRef: mockTrackRef,
         onDrag: mockOnDrag,
       })
     );
 
-    // Move mouse (simulates what would happen during drag)
-    mockOnDrag.mockClear();
-    const moveEvent = new MouseEvent('mousemove', { clientX: 250 });
-    document.dispatchEvent(moveEvent);
+    // Start dragging first
+    act(() => {
+      result.current.minHandleProps.onMouseDown({
+        clientX: 150,
+        preventDefault: vi.fn(),
+      } as unknown as React.MouseEvent);
+    });
 
-    // Note: This test verifies the hook sets up listeners correctly
-    // The actual drag callback is tested in integration tests
+    expect(result.current.isDragging).toBe('min');
+    mockOnDrag.mockClear();
+
+    // Now test mouse move during drag
+    act(() => {
+      const moveEvent = new MouseEvent('mousemove', { clientX: 250 });
+      document.dispatchEvent(moveEvent);
+    });
+
+    // Track is at x=100, width=200
+    // clientX=250 should be 75% ((250-100)/200)
+    expect(mockOnDrag).toHaveBeenCalledWith('min', 0.75);
   });
 });

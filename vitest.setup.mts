@@ -1,13 +1,11 @@
 import '@testing-library/jest-dom/vitest';
 import { cleanup } from '@testing-library/react';
-import { afterEach, vi } from 'vitest';
+import { afterEach } from 'vitest';
 
 // Clean up after each test
-// Order matters: cleanup components first, then timers
+// Only cleanup React components - let tests manage their own fake timers
 afterEach(() => {
-  cleanup();           // Unmount React components and run useEffect cleanup
-  vi.clearAllTimers(); // Clear any pending fake timers
-  vi.useRealTimers();  // Restore real timers for next test
+  cleanup(); // Unmount React components and run useEffect cleanup
 });
 
 // Mock CSS modules

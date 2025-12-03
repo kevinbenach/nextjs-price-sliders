@@ -8,13 +8,14 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.mts'],
     globals: true,
-    // Reduced timeouts now that cleanup is fixed
-    testTimeout: 5000,
-    hookTimeout: 5000,
-    // Using threads is faster than forks and should work now
+    // Conservative timeouts for CI reliability
+    testTimeout: 10000,
+    hookTimeout: 10000,
+    teardownTimeout: 10000,
+    // Using threads is faster than forks
     pool: 'threads',
-    // Allow more concurrency for faster test runs
-    maxConcurrency: 5,
+    // Conservative concurrency for CI (prevents resource exhaustion)
+    maxConcurrency: 3,
     // Enable file parallelism for better performance
     fileParallelism: true,
   },
