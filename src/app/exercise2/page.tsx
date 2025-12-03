@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
-import ClientWrapper from './client-wrapper';
+import { RangeWrapper } from '@/components/RangeWrapper';
+import { Navigation } from '@/components/Navigation';
 import styles from './page.module.css';
 
 async function getFixedRangeData() {
-  // In production, use the deployment URL. In dev, construct localhost URL
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
     : 'http://localhost:8080';
@@ -34,7 +34,7 @@ async function RangeContainer() {
           ))}
         </p>
       </div>
-      <ClientWrapper values={data.rangeValues} />
+      <RangeWrapper mode="fixed" values={data.rangeValues} />
     </div>
   );
 }
@@ -43,6 +43,8 @@ export default function Exercise2Page() {
   return (
     <main className={styles.main}>
       <div className={styles.container}>
+        <Navigation currentPage="exercise2" />
+
         <header className={styles.header}>
           <h1 className={styles.title}>Exercise 2: Fixed Values Range</h1>
           <p className={styles.description}>

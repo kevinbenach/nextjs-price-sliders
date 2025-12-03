@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
-import ClientWrapper from './client-wrapper';
+import { RangeWrapper } from '@/components/RangeWrapper';
+import { Navigation } from '@/components/Navigation';
 import styles from './page.module.css';
 
 async function fetchRangeData() {
-  // In production, use the deployment URL. In dev, construct localhost URL
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
     : 'http://localhost:8080';
@@ -24,7 +24,7 @@ async function RangeContainer() {
 
   return (
     <div className={styles.rangeContainer}>
-      <ClientWrapper min={data.min} max={data.max} />
+      <RangeWrapper mode="normal" min={data.min} max={data.max} />
     </div>
   );
 }
@@ -33,6 +33,8 @@ export default function Exercise1Page() {
   return (
     <main className={styles.main}>
       <div className={styles.container}>
+        <Navigation currentPage="exercise1" />
+
         <header className={styles.header}>
           <h1 className={styles.title}>Exercise 1: Normal Range</h1>
           <p className={styles.description}>
