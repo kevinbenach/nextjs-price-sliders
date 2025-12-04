@@ -60,6 +60,10 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  /* Card heights - FIXED to prevent CLS on navigation */
+  --card-min-height-mobile: 630px; /* All mobile cards same height (matches Exercise 2) */
+  --card-height-desktop: 580px; /* Fixed desktop height */
 }
 
 /* NO MORE RESPONSIVE VARIABLE CHANGES - This eliminates CLS! */

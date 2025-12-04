@@ -14,12 +14,14 @@
   border-radius: var(--radius-lg);
   padding: 24px; /* Compact on mobile */
   box-shadow: var(--shadow-lg);
+  min-height: var(--card-min-height-mobile); /* Match Exercise 2 height on mobile */
 }
 
 @media (min-width: 768px) {
   .container {
     padding: var(--spacing-2xl); /* Spacious on desktop */
-    height: 580px; /* Exact fixed height - prevents any variation */
+    height: var(--card-height-desktop); /* Exact fixed height - prevents any variation */
+    min-height: auto; /* Reset mobile constraint */
   }
 }
 

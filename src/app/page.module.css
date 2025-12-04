@@ -20,12 +20,14 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: var(--card-min-height-mobile); /* Match Exercise 2 height on mobile */
 }
 
 @media (min-width: 768px) {
   .content {
     padding: var(--spacing-3xl); /* Spacious on desktop */
-    height: 580px; /* Exact fixed height - prevents any variation */
+    height: var(--card-height-desktop); /* Exact fixed height - prevents any variation */
+    min-height: auto; /* Reset mobile constraint */
   }
 }
 
