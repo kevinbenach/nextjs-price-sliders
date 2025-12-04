@@ -71,14 +71,12 @@ export function Range(props: RangeProps) {
         const range = max - min;
 
         if (handle === "min") {
-          // Ensure min cannot reach max - must stay at least 1 step below
           const maxAllowedPercent = ((prev.maxValue - step) - min) / range;
           newMinPercent = Math.min(percent, maxAllowedPercent);
           const rawValue = min + newMinPercent * range;
           newMinValue = Math.round(rawValue / step) * step;
           newMinPercent = (newMinValue - min) / range;
         } else {
-          // Ensure max cannot reach min - must stay at least 1 step above
           const minAllowedPercent = ((prev.minValue + step) - min) / range;
           newMaxPercent = Math.max(percent, minAllowedPercent);
           const rawValue = min + newMaxPercent * range;
@@ -92,14 +90,12 @@ export function Range(props: RangeProps) {
         if (handle === "min") {
           const rawIndex = Math.round(percent * numSteps);
           const maxIndex = Math.round(prev.maxPercent * numSteps);
-          // Ensure min cannot reach max - must stay at least 1 index below
           const clampedIndex = Math.min(rawIndex, maxIndex - 1);
           newMinPercent = clampedIndex / numSteps;
           newMinValue = values[clampedIndex];
         } else {
           const rawIndex = Math.round(percent * numSteps);
           const minIndex = Math.round(prev.minPercent * numSteps);
-          // Ensure max cannot reach min - must stay at least 1 index above
           const clampedIndex = Math.max(rawIndex, minIndex + 1);
           newMaxPercent = clampedIndex / numSteps;
           newMaxValue = values[clampedIndex];
@@ -150,7 +146,6 @@ export function Range(props: RangeProps) {
 
       setState((prev) => {
         if (editingLabel === "min") {
-          // Ensure min stays at least 1 step below max
           const clampedValue = Math.max(min, Math.min(numValue, prev.maxValue - step));
           return {
             ...prev,
@@ -158,7 +153,6 @@ export function Range(props: RangeProps) {
             minPercent: (clampedValue - min) / (max - min),
           };
         } else {
-          // Ensure max stays at least 1 step above min
           const clampedValue = Math.max(prev.minValue + step, Math.min(numValue, max));
           return {
             ...prev,

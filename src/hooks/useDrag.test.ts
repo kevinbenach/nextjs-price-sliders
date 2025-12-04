@@ -3,10 +3,8 @@ import { describe, it, expect, vi } from 'vitest';
 import { useDrag } from './useDrag';
 
 describe('useDrag', () => {
-  // Helper to create a mock track ref
   const createMockTrackRef = () => {
     const div = document.createElement('div');
-    // Mock getBoundingClientRect
     div.getBoundingClientRect = vi.fn(() => ({
       left: 100,
       right: 300,
@@ -53,8 +51,6 @@ describe('useDrag', () => {
       })
     );
 
-    // Track is at x=100, width=200
-    // clientX=150 should be 25% ((150-100)/200)
     const mouseEvent = {
       clientX: 150,
       preventDefault: vi.fn(),
@@ -78,10 +74,9 @@ describe('useDrag', () => {
       })
     );
 
-    // Test below range (clientX < track.left)
     act(() => {
       result.current.minHandleProps.onMouseDown({
-        clientX: 50, // Before track starts
+        clientX: 50,
         preventDefault: vi.fn(),
       } as unknown as React.MouseEvent);
     });
@@ -89,10 +84,9 @@ describe('useDrag', () => {
 
     mockOnDrag.mockClear();
 
-    // Test above range (clientX > track.right)
     act(() => {
       result.current.maxHandleProps.onMouseDown({
-        clientX: 400, // After track ends
+        clientX: 400,
         preventDefault: vi.fn(),
       } as unknown as React.MouseEvent);
     });
@@ -158,7 +152,6 @@ describe('useDrag', () => {
       })
     );
 
-    // Start dragging
     act(() => {
       result.current.minHandleProps.onMouseDown({
         clientX: 150,
@@ -168,7 +161,6 @@ describe('useDrag', () => {
 
     expect(result.current.isDragging).toBe('min');
 
-    // Simulate mouse up (this happens via document listener)
     act(() => {
       const mouseUpEvent = new MouseEvent('mouseup');
       document.dispatchEvent(mouseUpEvent);
@@ -189,7 +181,6 @@ describe('useDrag', () => {
       })
     );
 
-    // Start dragging first
     act(() => {
       result.current.minHandleProps.onMouseDown({
         clientX: 150,
@@ -200,14 +191,11 @@ describe('useDrag', () => {
     expect(result.current.isDragging).toBe('min');
     mockOnDrag.mockClear();
 
-    // Now test mouse move during drag
     act(() => {
       const moveEvent = new MouseEvent('mousemove', { clientX: 250 });
       document.dispatchEvent(moveEvent);
     });
 
-    // Track is at x=100, width=200
-    // clientX=250 should be 75% ((250-100)/200)
     expect(mockOnDrag).toHaveBeenCalledWith('min', 0.75);
   });
 });

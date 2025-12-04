@@ -48,7 +48,6 @@ describe('/api/fixed-range', () => {
     const response = await responsePromise;
     const data = await response.json();
 
-    // From requirements: [1.99, 5.99, 10.99, 30.99, 50.99, 70.99]
     const expected = [1.99, 5.99, 10.99, 30.99, 50.99, 70.99];
     expect(data.rangeValues).toEqual(expected);
   });
@@ -59,7 +58,6 @@ describe('/api/fixed-range', () => {
     const response = await responsePromise;
     const data = await response.json();
 
-    // Need at least min and max
     expect(data.rangeValues.length).toBeGreaterThanOrEqual(2);
   });
 
@@ -88,10 +86,8 @@ describe('/api/fixed-range', () => {
     const response = await responsePromise;
     const data = await response.json();
 
-    // All values should be currency-like (have decimals)
     data.rangeValues.forEach((value: number) => {
       expect(value).toBeGreaterThan(0);
-      // Check it's a valid decimal number
       expect(Number.isFinite(value)).toBe(true);
     });
   });

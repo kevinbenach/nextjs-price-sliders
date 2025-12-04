@@ -12,14 +12,12 @@ export default function Error({
 }) {
   const pathname = usePathname();
 
-  // Determine current page from pathname
   const currentPage = pathname.includes('exercise1')
     ? 'exercise1'
     : pathname.includes('exercise2')
     ? 'exercise2'
-    : 'exercise1'; // fallback
+    : 'exercise1';
 
-  // Provide context-specific error messages
   const message = pathname.includes('exercise1')
     ? 'Failed to load the range data. Please try again.'
     : pathname.includes('exercise2')

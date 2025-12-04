@@ -4,7 +4,6 @@ import { RangeSkeleton } from '@/components/RangeSkeleton';
 import { Navigation } from '@/components/Navigation';
 import styles from './page.module.css';
 
-// Force dynamic rendering (SSR on each request) since we fetch from localhost
 export const dynamic = 'force-dynamic';
 
 async function getFixedRangeData() {
@@ -12,8 +11,6 @@ async function getFixedRangeData() {
     process.env.NEXT_PUBLIC_API_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:8080');
 
-  // Using cache: 'no-store' with dynamic = 'force-dynamic' for pure SSR
-  // This prevents Next.js from trying to pre-render at build time
   const res = await fetch(`${baseUrl}/api/fixed-range`, {
     cache: 'no-store',
   });

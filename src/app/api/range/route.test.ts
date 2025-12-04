@@ -45,7 +45,6 @@ describe('/api/range', () => {
     const response = await responsePromise;
     const data = await response.json();
 
-    // From requirements: {min: 1, max: 100}
     expect(data.min).toBe(1);
     expect(data.max).toBe(100);
   });

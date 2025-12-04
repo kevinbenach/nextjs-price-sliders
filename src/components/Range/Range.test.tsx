@@ -11,7 +11,6 @@ describe('Range Component', () => {
       const container = screen.getByTestId('range-container');
       expect(container).toBeInTheDocument();
 
-      // Check labels show correct format
       expect(screen.getByText('0.00€')).toBeInTheDocument();
       expect(screen.getByText('100.00€')).toBeInTheDocument();
     });
@@ -64,7 +63,7 @@ describe('Range Component', () => {
       const handleChange = vi.fn();
       render(<Range mode="normal" min={0} max={100} onChange={handleChange} />);
 
-      // onChange is called on mount with initial values
+    
       await waitFor(() => {
         expect(handleChange).toHaveBeenCalledWith({ min: 0, max: 100 });
       });
@@ -76,10 +75,8 @@ describe('Range Component', () => {
 
       const minLabel = screen.getByLabelText(/Minimum value: 0.00€/);
 
-      // Click on label
       await user.click(minLabel);
 
-      // Should show input
       const input = screen.getByLabelText('Minimum value input');
       expect(input).toBeInTheDocument();
       expect(input).toHaveValue(0);
@@ -93,19 +90,15 @@ describe('Range Component', () => {
 
       const minLabel = screen.getByLabelText(/Minimum value: 0.00€/);
 
-      // Click to edit
       await user.click(minLabel);
 
       const input = screen.getByLabelText('Minimum value input');
 
-      // Clear and type new value
       await user.clear(input);
       await user.type(input, '25');
 
-      // Blur to save
       await user.tab();
 
-      // Wait for value to update
       await waitFor(() => {
         expect(screen.getByText('25.00€')).toBeInTheDocument();
       });
@@ -125,14 +118,13 @@ describe('Range Component', () => {
 
       const minLabel = screen.getByLabelText(/Minimum value: 25.00€/);
 
-      // Try to set min to 75 (greater than max of 50)
+  
       await user.click(minLabel);
       const input = screen.getByLabelText('Minimum value input');
       await user.clear(input);
       await user.type(input, '75');
       await user.tab();
 
-      // Should clamp to one step below max (49) - handles never touch
       await waitFor(() => {
         const minValue = screen.getByLabelText(/Minimum value: 49.00€/);
         const maxValue = screen.getByLabelText(/Maximum value: 50.00€/);
@@ -153,7 +145,6 @@ describe('Range Component', () => {
       await user.type(input, '50');
       await user.keyboard('{Escape}');
 
-      // Input should be gone, original value preserved
       expect(screen.queryByLabelText('Minimum value input')).not.toBeInTheDocument();
       expect(screen.getByText('0.00€')).toBeInTheDocument();
     });
@@ -181,8 +172,6 @@ describe('Range Component', () => {
       const minHandle = screen.getByTestId('range-handle-min');
       expect(minHandle).toBeInTheDocument();
 
-      // Step is used internally for dragging logic
-      // Actual step validation is tested in drag tests
     });
   });
 
@@ -192,7 +181,6 @@ describe('Range Component', () => {
     it('should render with fixed values', () => {
       render(<Range mode="fixed" values={fixedValues} />);
 
-      // Should show first and last values
       expect(screen.getByText('1.99€')).toBeInTheDocument();
       expect(screen.getByText('70.99€')).toBeInTheDocument();
     });
@@ -217,10 +205,8 @@ describe('Range Component', () => {
 
       const minLabel = screen.getByLabelText(/Minimum value: 1.99€/);
 
-      // Click on label
       await user.click(minLabel);
 
-      // Should NOT show input
       const input = screen.queryByLabelText('Minimum value input');
       expect(input).not.toBeInTheDocument();
     });
@@ -266,7 +252,6 @@ describe('Range Component', () => {
       const minHandle = screen.getByTestId('range-handle-min');
       const maxHandle = screen.getByTestId('range-handle-max');
 
-      // Handles should have left positioning
       expect(minHandle).toHaveStyle({ left: '25%' });
       expect(maxHandle).toHaveStyle({ left: '75%' });
     });
@@ -284,7 +269,6 @@ describe('Range Component', () => {
 
       const activeTrack = screen.getByTestId('range-track-active');
 
-      // Active track should span from min to max
       expect(activeTrack).toHaveStyle({
         left: '25%',
         width: '50%',
