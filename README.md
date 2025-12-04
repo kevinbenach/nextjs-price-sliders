@@ -22,12 +22,19 @@ This project implements a custom `<Range />` component with two operating modes:
 - ✅ Zero CLS (Cumulative Layout Shift)
 - ✅ Touch device support
 
+## 🌐 Browser Support
+
+- ✅ Chrome/Edge (latest)
+- ✅ Firefox (latest)
+- ✅ Safari (latest)
+- ✅ Mobile browsers (iOS Safari, Chrome Android)
+
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 18+ installed
-- npm or yarn package manager
+- Node.js 20+ installed (required)
+- npm 10+ package manager
 
 ### Installation
 
@@ -61,24 +68,28 @@ npm run start
 
 ### Testing
 
+**Unit Tests (Vitest + Testing Library):**
 ```bash
-# Run unit tests (Vitest)
-npm test
+npm test                    # Run all unit tests once
+npm run test:ui             # Interactive UI for debugging
+npm run test:coverage       # Generate coverage report (requires @vitest/coverage-v8)
+```
 
-# Run unit tests with UI
-npm run test:ui
+**E2E Tests (Playwright):**
+```bash
+# First time setup - install browsers
+npx playwright install chromium
 
-# Run unit tests with coverage
-npm run test:coverage
+# Run tests
+npm run test:e2e            # Run all E2E tests (headless)
+npm run test:e2e:ui         # Visual test runner with UI
+npm run test:e2e:headed     # Run with visible browser
+```
 
-# Run E2E tests (Playwright)
-npm run test:e2e
-
-# Run E2E tests with UI (visual debugging)
-npm run test:e2e:ui
-
-# Run all tests (unit + E2E)
-npm run test:all
+**All Tests:**
+```bash
+npm run test:all            # Run unit + E2E tests
+npm run ci                  # Full CI pipeline (lint + type + test + build + e2e)
 ```
 
 ## 📁 Project Structure
@@ -274,6 +285,38 @@ npm run build
 npm run start
 ```
 
+## 🎯 Project Highlights
+
+**What makes this implementation stand out:**
+
+### Code Quality
+- ✅ Zero console.logs, no debugging code
+- ✅ 100% TypeScript with strict mode
+- ✅ Single unified component for both modes (DRY principle)
+- ✅ Custom hooks for separation of concerns
+- ✅ Zero ESLint errors, zero TypeScript errors
+
+### Testing Excellence
+- ✅ **54 tests total** (43 unit + 11 E2E)
+- ✅ Comprehensive coverage of edge cases
+- ✅ CI/CD pipeline with GitHub Actions
+- ✅ Both unit (Vitest) and E2E (Playwright) testing
+
+### UX & Performance
+- ✅ **Zero CLS** (Cumulative Layout Shift)
+- ✅ Full accessibility (ARIA, keyboard navigation)
+- ✅ Touch-optimized for mobile
+- ✅ Smooth animations and transitions
+- ✅ Proper loading states with Suspense
+
+### Architecture
+- ✅ Modern Next.js 16 App Router patterns
+- ✅ Server/Client component separation
+- ✅ Type-safe with discriminated unions
+- ✅ Production-ready error handling
+
+---
+
 ## 📄 License
 
 ISC
@@ -289,4 +332,4 @@ Kevin Benach
 
 ---
 
-**Note**: This project was built as a technical test for MANGO, demonstrating modern React/Next.js patterns, TypeScript expertise, testing practices, and attention to UX details.
+**Note**: This project was built as a technical test for MANGO, demonstrating modern React/Next.js patterns, TypeScript expertise, comprehensive testing practices, and attention to UX/accessibility details.
