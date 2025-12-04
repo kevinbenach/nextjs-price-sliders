@@ -66,6 +66,14 @@
   justify-content: center;
 }
 
+/* Stack buttons on mobile for equal width */
+@media (max-width: 767px) {
+  .nav {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
 .link {
   padding: var(--spacing-md) var(--spacing-xl);
   background: var(--color-foreground);
@@ -76,6 +84,14 @@
   font-size: 1rem;
   transition: opacity 150ms ease, transform 150ms ease;
   display: inline-block;
+}
+
+/* Full width buttons on mobile */
+@media (max-width: 767px) {
+  .link {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 .link:hover {
