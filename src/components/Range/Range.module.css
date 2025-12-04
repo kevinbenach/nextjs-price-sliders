@@ -122,9 +122,6 @@
   background-color: var(--range-track-active);
   border-radius: calc(var(--range-track-height) / 2);
   pointer-events: none;
-  transition:
-    left var(--transition-fast),
-    width var(--transition-fast);
 }
 
 /* Handle - Fixed size with mobile-friendly touch targets */
@@ -141,8 +138,7 @@
   transition:
     width var(--transition-fast),
     height var(--transition-fast),
-    box-shadow var(--transition-fast),
-    transform var(--transition-fast);
+    box-shadow var(--transition-fast);
   box-shadow: var(--shadow-md);
   z-index: 1;
   touch-action: none;
