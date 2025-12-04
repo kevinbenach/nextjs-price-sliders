@@ -12,10 +12,10 @@ async function fetchRangeData() {
     process.env.NEXT_PUBLIC_API_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:8080');
 
-  // Revalidate every 5 minutes: balances data freshness with performance
-  // First visit shows skeleton, subsequent visits (within 5min) load instantly
+  // Using cache: 'no-store' with dynamic = 'force-dynamic' for pure SSR
+  // This prevents Next.js from trying to pre-render at build time
   const res = await fetch(`${baseUrl}/api/range`, {
-    next: { revalidate: 300 },
+    cache: 'no-store',
   });
 
   if (!res.ok) {
