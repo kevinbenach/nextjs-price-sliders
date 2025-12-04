@@ -132,9 +132,9 @@ describe('Range Component', () => {
       await user.type(input, '75');
       await user.tab();
 
-      // Should clamp to max value - check both labels show 50
+      // Should clamp to one step below max (49) - handles never touch
       await waitFor(() => {
-        const minValue = screen.getByLabelText(/Minimum value: 50.00€/);
+        const minValue = screen.getByLabelText(/Minimum value: 49.00€/);
         const maxValue = screen.getByLabelText(/Maximum value: 50.00€/);
         expect(minValue).toBeInTheDocument();
         expect(maxValue).toBeInTheDocument();
