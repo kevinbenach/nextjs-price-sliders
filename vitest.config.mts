@@ -8,6 +8,8 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.mts'],
     globals: true,
+    // Exclude E2E tests (run separately with Playwright)
+    exclude: ['**/node_modules/**', '**/e2e/**', '**/.{idea,git,cache,output,temp}/**'],
     // Conservative timeouts for CI reliability
     testTimeout: 10000,
     hookTimeout: 10000,

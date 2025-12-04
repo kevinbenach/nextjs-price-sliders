@@ -16,7 +16,7 @@ This project implements a custom `<Range />` component with two operating modes:
 - ✅ Editable labels (normal mode)
 - ✅ Server-side data fetching with Next.js App Router
 - ✅ Full TypeScript support
-- ✅ Comprehensive test coverage (790+ lines of tests)
+- ✅ Comprehensive test coverage (54 tests: 43 unit + 11 E2E)
 - ✅ Responsive design (mobile & desktop)
 - ✅ Accessibility (ARIA labels, keyboard support)
 - ✅ Zero CLS (Cumulative Layout Shift)
@@ -62,14 +62,23 @@ npm run start
 ### Testing
 
 ```bash
-# Run all tests
+# Run unit tests (Vitest)
 npm test
 
-# Run tests with UI
+# Run unit tests with UI
 npm run test:ui
 
-# Run tests with coverage
+# Run unit tests with coverage
 npm run test:coverage
+
+# Run E2E tests (Playwright)
+npm run test:e2e
+
+# Run E2E tests with UI (visual debugging)
+npm run test:e2e:ui
+
+# Run all tests (unit + E2E)
+npm run test:all
 ```
 
 ## 📁 Project Structure
@@ -92,9 +101,14 @@ nextjs-price-sliders/
 │   │   └── Navigation/           # Navigation component
 │   └── hooks/                    # Custom React hooks
 │       └── useDrag.ts            # Drag interaction logic
+├── e2e/                          # E2E tests (Playwright)
+│   ├── navigation.spec.ts        # Navigation flow tests
+│   ├── exercise1.spec.ts         # Exercise 1 E2E tests
+│   └── exercise2.spec.ts         # Exercise 2 E2E tests
 ├── package.json
 ├── tsconfig.json
-├── vitest.config.ts
+├── vitest.config.ts              # Unit test config
+├── playwright.config.ts          # E2E test config
 └── README.md
 ```
 
@@ -149,15 +163,36 @@ The project follows Next.js 13+ best practices:
 
 ## 🧪 Testing
 
-Tests are written with **Vitest** and **Testing Library**:
+### Unit Tests (Vitest + Testing Library)
 
 ```bash
-# Test coverage:
-- Range component: 26 tests
+# Coverage:
+- Range component: 22 tests
 - useDrag hook: 7 tests
 - API routes: 14 tests
-- Total: 790+ lines of tests
+- Total: 43 unit tests
+
+# Run unit tests:
+npm test
 ```
+
+### E2E Tests (Playwright)
+
+```bash
+# Coverage:
+- Navigation flow: 2 tests
+- Exercise 1 functionality: 4 tests
+- Exercise 2 functionality: 5 tests
+- Total: 11 E2E tests
+
+# Run E2E tests:
+npm run test:e2e
+
+# Run with visual debugging:
+npm run test:e2e:ui
+```
+
+**Complete Test Suite:** 54 tests total (43 unit + 11 E2E)
 
 ## 🌐 API Endpoints
 
@@ -213,7 +248,7 @@ Returns array of predefined values for fixed range mode.
 - **Framework**: Next.js 16 (App Router)
 - **UI Library**: React 19
 - **Language**: TypeScript 5.9
-- **Testing**: Vitest 4.0 + Testing Library
+- **Testing**: Vitest 4.0 + Testing Library + Playwright
 - **Styling**: CSS Modules
 - **Port**: 8080
 

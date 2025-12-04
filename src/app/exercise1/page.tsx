@@ -4,6 +4,9 @@ import { RangeSkeleton } from '@/components/RangeSkeleton';
 import { Navigation } from '@/components/Navigation';
 import styles from './page.module.css';
 
+// Force dynamic rendering (SSR on each request) since we fetch from localhost
+export const dynamic = 'force-dynamic';
+
 async function fetchRangeData() {
   const baseUrl =
     process.env.NEXT_PUBLIC_API_URL ||
