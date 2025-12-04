@@ -71,7 +71,7 @@ npm run start
 **Unit Tests (Vitest + Testing Library):**
 ```bash
 npm test                    # Run all unit tests once
-npm run test:ui             # Interactive UI for debugging
+npm run test:ui             # Interactive UI for debugging (requires @vitest/ui)
 npm run test:coverage       # Generate coverage report (requires @vitest/coverage-v8)
 ```
 
