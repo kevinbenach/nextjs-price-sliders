@@ -9,8 +9,10 @@ async function getFixedRangeData() {
     process.env.NEXT_PUBLIC_API_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:8080');
 
+  // Revalidate every 5 minutes: balances data freshness with performance
+  // First visit shows skeleton, subsequent visits (within 5min) load instantly
   const res = await fetch(`${baseUrl}/api/fixed-range`, {
-    cache: 'no-store',
+    next: { revalidate: 300 },
   });
 
   if (!res.ok) {

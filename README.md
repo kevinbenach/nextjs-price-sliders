@@ -203,7 +203,7 @@ Returns array of predefined values for fixed range mode.
 
 ### Performance
 
-- Server-side data fetching
+- Server-side data fetching with 5-minute revalidation (balances freshness vs instant loads)
 - React Suspense for loading states
 - Optimized re-renders
 - Minimal bundle size
