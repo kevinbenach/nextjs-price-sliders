@@ -126,8 +126,8 @@
 /* Larger touch target on mobile */
 @media (pointer: coarse) {
   .handle {
-    min-width: 44px;
-    min-height: 44px;
+    min-width: 34px;
+    min-height: 34px;
   }
 }
 
