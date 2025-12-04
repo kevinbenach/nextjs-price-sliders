@@ -107,11 +107,19 @@
   position: relative;
   flex: 1;
   height: var(--range-track-height);
-  background-color: var(--range-track-bg);
-  border-radius: calc(var(--range-track-height) / 2);
   cursor: pointer;
   padding: var(--spacing-md) 0;
   margin: calc(var(--spacing-md) * -1) 0;
+}
+
+.trackInactive {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: var(--range-track-height);
+  background-color: var(--range-track-bg);
+  border-radius: calc(var(--range-track-height) / 2);
+  pointer-events: none;
 }
 
 .trackActive {

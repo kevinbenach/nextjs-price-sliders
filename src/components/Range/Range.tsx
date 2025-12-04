@@ -267,12 +267,30 @@ export function Range(props: RangeProps) {
 
       <div ref={trackRef} className={styles.track} data-testid="range-track">
         <div
+          className={styles.trackInactive}
+          style={{
+            left: '0%',
+            width: `${state.minPercent * 100}%`,
+          }}
+          data-testid="range-track-inactive-left"
+        />
+
+        <div
           className={styles.trackActive}
           style={{
             left: `${state.minPercent * 100}%`,
             width: `${(state.maxPercent - state.minPercent) * 100}%`,
           }}
           data-testid="range-track-active"
+        />
+
+        <div
+          className={styles.trackInactive}
+          style={{
+            left: `${state.maxPercent * 100}%`,
+            width: `${(1 - state.maxPercent) * 100}%`,
+          }}
+          data-testid="range-track-inactive-right"
         />
 
         <div
