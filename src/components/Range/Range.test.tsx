@@ -211,6 +211,30 @@ describe('Range Component', () => {
       expect(input).not.toBeInTheDocument();
     });
 
+    it('should position handles based on value proportion not array index', () => {
+      render(
+        <Range
+          mode="fixed"
+          values={fixedValues}
+          initialMinIndex={3}
+          initialMaxIndex={4}
+        />
+      );
+
+      const minHandle = screen.getByTestId('range-handle-min');
+      const maxHandle = screen.getByTestId('range-handle-max');
+
+      const rangeMin = fixedValues[0];
+      const rangeMax = fixedValues[fixedValues.length - 1];
+      const range = rangeMax - rangeMin;
+
+      const expectedMin = ((30.99 - rangeMin) / range) * 100;
+      const expectedMax = ((50.99 - rangeMin) / range) * 100;
+
+      expect(minHandle).toHaveStyle({ left: `${expectedMin}%` });
+      expect(maxHandle).toHaveStyle({ left: `${expectedMax}%` });
+    });
+
     it('should have correct ARIA values for fixed mode', () => {
       render(<Range mode="fixed" values={fixedValues} />);
 

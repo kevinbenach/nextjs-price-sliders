@@ -43,11 +43,16 @@ export function Range(props: RangeProps) {
       const values = props.values;
       const minIndex = props.initialMinIndex ?? 0;
       const maxIndex = props.initialMaxIndex ?? values.length - 1;
+      const minVal = values[minIndex];
+      const maxVal = values[maxIndex];
+      const rangeMin = values[0];
+      const rangeMax = values[values.length - 1];
+      const range = rangeMax - rangeMin;
       return {
-        minValue: values[minIndex],
-        maxValue: values[maxIndex],
-        minPercent: minIndex / (values.length - 1),
-        maxPercent: maxIndex / (values.length - 1),
+        minValue: minVal,
+        maxValue: maxVal,
+        minPercent: (minVal - rangeMin) / range,
+        maxPercent: (maxVal - rangeMin) / range,
       };
     }
   });
@@ -85,20 +90,46 @@ export function Range(props: RangeProps) {
         }
       } else {
         const { values } = currentProps;
-        const numSteps = values.length - 1;
+        const rangeMin = values[0];
+        const rangeMax = values[values.length - 1];
+        const range = rangeMax - rangeMin;
 
         if (handle === "min") {
-          const rawIndex = Math.round(percent * numSteps);
-          const maxIndex = Math.round(prev.maxPercent * numSteps);
-          const clampedIndex = Math.min(rawIndex, maxIndex - 1);
-          newMinPercent = clampedIndex / numSteps;
-          newMinValue = values[clampedIndex];
+          const targetValue = rangeMin + (percent * range);
+
+          let nearestValue = values[0];
+          let minDistance = Infinity;
+
+          for (const val of values) {
+            if (val < prev.maxValue) {
+              const distance = Math.abs(val - targetValue);
+              if (distance < minDistance) {
+                minDistance = distance;
+                nearestValue = val;
+              }
+            }
+          }
+
+          newMinValue = nearestValue;
+          newMinPercent = (nearestValue - rangeMin) / range;
         } else {
-          const rawIndex = Math.round(percent * numSteps);
-          const minIndex = Math.round(prev.minPercent * numSteps);
-          const clampedIndex = Math.max(rawIndex, minIndex + 1);
-          newMaxPercent = clampedIndex / numSteps;
-          newMaxValue = values[clampedIndex];
+          const targetValue = rangeMin + (percent * range);
+
+          let nearestValue = values[values.length - 1];
+          let minDistance = Infinity;
+
+          for (const val of values) {
+            if (val > prev.minValue) {
+              const distance = Math.abs(val - targetValue);
+              if (distance < minDistance) {
+                minDistance = distance;
+                nearestValue = val;
+              }
+            }
+          }
+
+          newMaxValue = nearestValue;
+          newMaxPercent = (nearestValue - rangeMin) / range;
         }
       }
 
